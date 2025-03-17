@@ -1,0 +1,9 @@
+name: shopPlugin
+version: '1.0-SNAPSHOT'
+main: com.popogonry.shopPlugin.ShopPlugin
+api-version: '1.21'
+commands:
+  cash:
+    description: cash
+  item:
+
