@@ -1,4 +1,4 @@
-package com.popogonry;
+package com.popogonry.shopPlugin;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

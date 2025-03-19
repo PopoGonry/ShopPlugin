@@ -1,4 +1,4 @@
-package com.popogonry;
+package com.popogonry.shopPlugin;
 
 public class Reference {
     public static String prefix_normal = "§r§f「§6§lShop§r§f」§7 §r";

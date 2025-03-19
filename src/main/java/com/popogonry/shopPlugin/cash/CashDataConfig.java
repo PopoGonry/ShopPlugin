@@ -1,6 +1,6 @@
 package com.popogonry.shopPlugin.cash;
 
-import com.popogonry.Config;
+import com.popogonry.shopPlugin.Config;
 
 import java.util.UUID;
 

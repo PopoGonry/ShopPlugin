@@ -1,13 +1,12 @@
 package com.popogonry.shopPlugin.cash;
 
-import com.popogonry.Reference;
+import com.popogonry.shopPlugin.Reference;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 

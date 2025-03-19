@@ -1,6 +1,6 @@
 package com.popogonry.shopPlugin.item;
 
-import com.popogonry.Reference;
+import com.popogonry.shopPlugin.Reference;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

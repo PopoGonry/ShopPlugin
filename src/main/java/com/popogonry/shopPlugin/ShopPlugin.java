@@ -1,6 +1,5 @@
 package com.popogonry.shopPlugin;
 
-import com.popogonry.Reference;
 import com.popogonry.shopPlugin.cash.CashCommand;
 import com.popogonry.shopPlugin.cash.CashEvent;
 import com.popogonry.shopPlugin.cash.CashRepository;

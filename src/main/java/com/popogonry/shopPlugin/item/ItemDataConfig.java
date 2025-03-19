@@ -1,10 +1,9 @@
 package com.popogonry.shopPlugin.item;
 
-import com.popogonry.Config;
+import com.popogonry.shopPlugin.Config;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class ItemDataConfig extends Config {

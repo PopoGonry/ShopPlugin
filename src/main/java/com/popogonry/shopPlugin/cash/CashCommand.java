@@ -1,6 +1,6 @@
 package com.popogonry.shopPlugin.cash;
 
-import com.popogonry.Reference;
+import com.popogonry.shopPlugin.Reference;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -10,10 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
-import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.UUID;
 
 public class CashCommand implements CommandExecutor {
     @Override
