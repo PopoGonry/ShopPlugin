@@ -14,7 +14,14 @@ public class Shop implements ConfigurationSerializable {
 
     private String name;
     private HashMap<Integer, Integer> itemHashMap = new HashMap<>();
-    private int col = 6;
+    private int col;
+
+
+    public Shop(String name, HashMap<Integer, Integer> itemHashMap) {
+        this.name = name;
+        this.itemHashMap = itemHashMap;
+        this.col = 0;
+    }
 
     public Shop(String name, HashMap<Integer, Integer> itemHashMap, int col) {
         this.name = name;
@@ -42,4 +49,36 @@ public class Shop implements ConfigurationSerializable {
         );
     }
 
+    @Override
+    public String toString() {
+        return "Shop{" +
+                "name='" + name + '\'' +
+                ", itemHashMap=" + itemHashMap +
+                ", col=" + col +
+                '}';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public HashMap<Integer, Integer> getItemHashMap() {
+        return itemHashMap;
+    }
+
+    public void setItemHashMap(HashMap<Integer, Integer> itemHashMap) {
+        this.itemHashMap = itemHashMap;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
 }

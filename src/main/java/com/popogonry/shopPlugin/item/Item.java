@@ -4,7 +4,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,20 +13,33 @@ public class Item implements ConfigurationSerializable {
     private ItemStack itemStack;
     private String name;
     private List<String> lore;
+
+
     private int price;
     private int discountPrice;
+
+
     private int remainAmount;
+    private int limitAmount;
+    private boolean isLimitAmount;
+
+    private long limitDate;
+    private Boolean isLimitDate;
+
     private boolean isUseItemLore;
 
-    public Item(ItemStack itemStack, String name, List<String> lore, int price, Integer discountPrice, Integer remainAmount, boolean isUseItemLore) {
+    public Item(ItemStack itemStack, String name, List<String> lore, int price, int discountPrice, int remainAmount, int limitAmount, boolean isLimitAmount, Long limitDate, Boolean isLimitDate, boolean isUseItemLore) {
         this.itemStack = itemStack;
         this.name = name;
         this.lore = lore;
         this.price = price;
         this.discountPrice = discountPrice;
         this.remainAmount = remainAmount;
+        this.limitAmount = limitAmount;
+        this.isLimitAmount = isLimitAmount;
+        this.limitDate = limitDate;
+        this.isLimitDate = isLimitDate;
         this.isUseItemLore = isUseItemLore;
-
     }
 
     @Override
@@ -39,6 +52,10 @@ public class Item implements ConfigurationSerializable {
         map.put("price", price);
         map.put("discountPrice", discountPrice);
         map.put("remainAmount", remainAmount);
+        map.put("limitAmount", limitAmount);
+        map.put("isLimitAmount", isLimitAmount);
+        map.put("limitDate", limitDate);
+        map.put("isLimitDate", isLimitDate);
         map.put("isUseItemLore", isUseItemLore);
 
         return map;
@@ -46,16 +63,20 @@ public class Item implements ConfigurationSerializable {
     }
 
     public static Item deserialize(Map<String, Object> map) {
-        return new Item(
+        return new Item (
                 ItemStack.deserialize((Map<String, Object>) map.get("itemStack")),
                 (String) map.get("name"),
                 (List<String>) map.get("lore"),
                 (int) map.get("price"),
                 (Integer) map.get("discountPrice"),
                 (Integer) map.get("remainAmount"),
-                (boolean) map.get("isUseItemLore"));
+                (Integer) map.get("limitAmount"),
+                (boolean) map.get("isLimitAmount"),
+                Long.valueOf(String.valueOf(map.get("limitDate"))),
+                (boolean) map.get("isLimitDate"),
+                (boolean) map.get("isUseItemLore")
+        );
     }
-
 
     @Override
     public String toString() {
@@ -66,6 +87,10 @@ public class Item implements ConfigurationSerializable {
                 ", price=" + price +
                 ", discountPrice=" + discountPrice +
                 ", remainAmount=" + remainAmount +
+                ", limitAmount=" + limitAmount +
+                ", isLimitAmount=" + isLimitAmount +
+                ", limitDate=" + limitDate +
+                ", isLimitDate=" + isLimitDate +
                 ", isUseItemLore=" + isUseItemLore +
                 '}';
     }
@@ -118,6 +143,30 @@ public class Item implements ConfigurationSerializable {
         this.remainAmount = remainAmount;
     }
 
+    public int getLimitAmount() {
+        return limitAmount;
+    }
+
+    public void setLimitAmount(int limitAmount) {
+        this.limitAmount = limitAmount;
+    }
+
+    public boolean isLimitAmount() {
+        return isLimitAmount;
+    }
+
+    public void setLimitAmount(boolean limitAmount) {
+        isLimitAmount = limitAmount;
+    }
+
+    public long getLimitDate() {
+        return limitDate;
+    }
+
+    public void setLimitDate(Boolean limitDate) {
+        isLimitDate = limitDate;
+    }
+
     public boolean isUseItemLore() {
         return isUseItemLore;
     }
@@ -126,5 +175,7 @@ public class Item implements ConfigurationSerializable {
         isUseItemLore = useItemLore;
     }
 
-
+    public void setLimitDate(long limitDate) {
+        this.limitDate = limitDate;
+    }
 }
