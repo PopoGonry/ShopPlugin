@@ -11,7 +11,7 @@ public class ItemRepository {
 
     private final ItemDataConfig itemDataConfig;
 
-    static HashMap<Integer, Item> itemDataHashMap = new HashMap<>();
+    public static HashMap<Integer, Item> itemDataHashMap = new HashMap<>();
     public static HashSet<Integer> itemIdSet = new HashSet<>();
 
 

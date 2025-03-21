@@ -20,7 +20,7 @@ public class Shop implements ConfigurationSerializable {
     public Shop(String name, HashMap<Integer, Integer> itemHashMap) {
         this.name = name;
         this.itemHashMap = itemHashMap;
-        this.col = 0;
+        this.col = 6;
     }
 
     public Shop(String name, HashMap<Integer, Integer> itemHashMap, int col) {

@@ -44,7 +44,7 @@ public class ShopRepository {
     }
 
     public void loadShopData(String shopName) {
-        shopDataConfig.loadShopData(shopName);
+        shopDataHashMap.put(shopName, shopDataConfig.loadShopData(shopName));
     }
     public void removeShopData(String shopName) {
         shopDataConfig.removeShopData(shopName);

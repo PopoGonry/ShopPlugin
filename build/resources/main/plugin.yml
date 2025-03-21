@@ -6,4 +6,5 @@ commands:
   cash:
     description: cash
   item:
+  shop:
 

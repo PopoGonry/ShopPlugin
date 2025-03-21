@@ -7,4 +7,6 @@ public interface ItemService {
     public boolean createItem(Item item);
     public boolean removeItem(int itemId);
     public int getNewItemId();
+
+
 }

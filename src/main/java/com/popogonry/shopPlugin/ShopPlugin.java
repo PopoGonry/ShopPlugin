@@ -7,6 +7,8 @@ import com.popogonry.shopPlugin.item.Item;
 import com.popogonry.shopPlugin.item.ItemCommand;
 import com.popogonry.shopPlugin.item.ItemRepository;
 import com.popogonry.shopPlugin.shop.Shop;
+import com.popogonry.shopPlugin.shop.ShopCommand;
+import com.popogonry.shopPlugin.shop.ShopRepository;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,6 +31,7 @@ public final class ShopPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CashEvent(), this);
         getServer().getPluginCommand("cash").setExecutor(new CashCommand());
         getServer().getPluginCommand("item").setExecutor(new ItemCommand());
+        getServer().getPluginCommand("shop").setExecutor(new ShopCommand());
 
 
 //         player cash data load
@@ -54,15 +57,17 @@ public final class ShopPlugin extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Item Data Load Complete!");
 
 //        shop data load
+        ShopRepository shopRepository = new ShopRepository();
+
         Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Shop Data Load Start...");
 
+        shopRepository.loadShopNameSetData();
 
-
+        for (String shopName : ShopRepository.shopNameSet) {
+            shopRepository.loadShopData(shopName);
+        }
 
         Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Shop Data Load Complete!");
-
-
-
 
 
 
@@ -92,7 +97,15 @@ public final class ShopPlugin extends JavaPlugin {
         itemRepository.storeItemIdSetData();
         Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Item Data Store Complete!");
 
+//        shop data store
+        ShopRepository shopRepository = new ShopRepository();
+        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Shop Data Store Start...");
+        for (String shopName : ShopRepository.shopNameSet) {
+            shopRepository.storeShopData(shopName);
+        }
+        shopRepository.storeShopNameSetData();
 
+        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Shop Data Store Complete!");
 
 
         serverInstance = null;
