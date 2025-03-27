@@ -14,7 +14,6 @@ public class Item implements ConfigurationSerializable {
     private String name;
     private List<String> lore;
 
-
     private int price;
     private int discountPrice;
 
@@ -153,6 +152,10 @@ public class Item implements ConfigurationSerializable {
 
     public boolean isLimitAmount() {
         return isLimitAmount;
+    }
+
+    public boolean isLimitDate() {
+        return isLimitDate;
     }
 
     public void setLimitAmount(boolean limitAmount) {

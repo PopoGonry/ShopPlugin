@@ -28,9 +28,14 @@ public class ItemCommand implements CommandExecutor {
                 }
                 else if (strings[0].equalsIgnoreCase("create")) {
                     ItemService itemService = new ItemServiceImpl();
-                    itemService.createItem(new Item(new ItemStack(Material.WOODEN_AXE), "test", null, 10000, 1000, 10, 20, true, 0L, false, false));
+                    for (int i = 0; i < 10; i++) {
+                        itemService.createItem(new Item(new ItemStack(Material.WOODEN_AXE), "test", null, 10000, 1000, 10, 20, true, 0L, false, false));
+                    }
                 }
-
+                else if (strings[0].equalsIgnoreCase("list")) {
+                    ItemGUI itemGUI = new ItemGUIImpl();
+                    itemGUI.openItemListGUI(player, 1);
+                }
 
             }
         }

@@ -5,6 +5,7 @@ import com.popogonry.shopPlugin.cash.CashEvent;
 import com.popogonry.shopPlugin.cash.CashRepository;
 import com.popogonry.shopPlugin.item.Item;
 import com.popogonry.shopPlugin.item.ItemCommand;
+import com.popogonry.shopPlugin.item.ItemGUIEvent;
 import com.popogonry.shopPlugin.item.ItemRepository;
 import com.popogonry.shopPlugin.shop.Shop;
 import com.popogonry.shopPlugin.shop.ShopCommand;
@@ -29,6 +30,7 @@ public final class ShopPlugin extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new ShopPluginEvent(), this);
         getServer().getPluginManager().registerEvents(new CashEvent(), this);
+        getServer().getPluginManager().registerEvents(new ItemGUIEvent(), this);
         getServer().getPluginCommand("cash").setExecutor(new CashCommand());
         getServer().getPluginCommand("item").setExecutor(new ItemCommand());
         getServer().getPluginCommand("shop").setExecutor(new ShopCommand());
