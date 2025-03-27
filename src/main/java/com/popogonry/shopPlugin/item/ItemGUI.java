@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 public interface ItemGUI {
     boolean openItemListGUI(Player player, int page);
-    boolean openItemSettingGUI(Player player, Item item);
+    boolean openItemSettingGUI(Player player, Integer itemID);
     ItemStack getItemStack(Integer itemID);
     ItemStack getItemStackShopVer(Integer itemID);
 }

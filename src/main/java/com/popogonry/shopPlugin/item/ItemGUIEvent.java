@@ -1,6 +1,7 @@
 package com.popogonry.shopPlugin.item;
 
 import com.popogonry.shopPlugin.Reference;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +15,10 @@ public class ItemGUIEvent implements Listener {
 
     @EventHandler
     public static void onClickItemListGUI(InventoryClickEvent event) {
-        if(event.getView().getTitle().equalsIgnoreCase(Reference.prefix_normal + "Item List GUI")) {
+        if(event.getView().getTitle().equalsIgnoreCase(Reference.prefix_normal + "Item List GUI")
+                && event.getCurrentItem() != null
+                && event.getCurrentItem().getType() != Material.AIR) {
+
             event.setCancelled(true);
 
             Player player = (Player) event.getWhoClicked();
@@ -48,7 +52,7 @@ public class ItemGUIEvent implements Listener {
                 Item item;
                 item = ItemRepository.itemDataHashMap.get(itemID);
 
-                itemGUI.openItemSettingGUI(player, item);
+                itemGUI.openItemSettingGUI(player, itemID);
             }
 
 

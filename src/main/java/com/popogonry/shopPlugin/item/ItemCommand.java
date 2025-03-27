@@ -9,6 +9,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+
 public class ItemCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -29,7 +34,7 @@ public class ItemCommand implements CommandExecutor {
                 else if (strings[0].equalsIgnoreCase("create")) {
                     ItemService itemService = new ItemServiceImpl();
                     for (int i = 0; i < 10; i++) {
-                        itemService.createItem(new Item(new ItemStack(Material.WOODEN_AXE), "test", null, 10000, 1000, 10, 20, true, 0L, false, false));
+                        itemService.createItem(new Item(new ItemStack(Material.WOODEN_AXE), "test", Collections.singletonList("test"), 10000, 1000, 10, 20, true, new Date().getTime(), true, false));
                     }
                 }
                 else if (strings[0].equalsIgnoreCase("list")) {

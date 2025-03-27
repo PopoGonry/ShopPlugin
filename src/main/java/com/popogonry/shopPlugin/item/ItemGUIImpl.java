@@ -10,6 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ItemGUIImpl implements ItemGUI {
@@ -44,10 +45,12 @@ public class ItemGUIImpl implements ItemGUI {
     }
 
     @Override
-    public boolean openItemSettingGUI(Player player, Item item) {
+    public boolean openItemSettingGUI(Player player, Integer itemID) {
+        Item item = ItemRepository.itemDataHashMap.get(itemID);
+
         Inventory inventory = Bukkit.createInventory(player, 27, Reference.prefix_normal + item.getName() + " Setting GUI");
 
-
+        inventory.setItem(4, getItemStackShopVer(itemID));
 
 
         player.openInventory(inventory);
@@ -112,28 +115,49 @@ public class ItemGUIImpl implements ItemGUI {
             List<String> itemStackLore = item.getItemStack().getLore();
             if (itemStackLore != null) {
                 lore.addAll(itemStackLore);
+                lore.add(ChatColor.GOLD + "------------------");
             }
-            lore.add("------------------");
+            else {
+                lore.add(" ");
+            }
         }
 
         // 할인 X
         if(item.getPrice() == item.getDiscountPrice()) {
-
+            lore.add(ChatColor.GOLD + "가격: " + item.getPrice());
         }
         // 할인 O
         else {
+//            lore.add(ChatColor.GOLD + "가격: " + "" + ChatColor.STRIKETHROUGH + item.getPrice() + ChatColor.RESET + ChatColor.GOLD + " => " + item.getDiscountPrice()
+//                    + " (" + String.format("%.1f", (item.getPrice() > 0 ? (double)(item.getPrice() - item.getDiscountPrice()) / item.getPrice() * 100 : 0)) + "%)");
+            lore.add(ChatColor.GOLD + "가격: " + ChatColor.RED + ChatColor.STRIKETHROUGH + item.getPrice() + "원" +
+                    ChatColor.RESET + ChatColor.GOLD + " => " + ChatColor.GREEN + item.getDiscountPrice() + "원" +
+                    ChatColor.GRAY + " (" + String.format("%.1f",
+                    (item.getPrice() > 0 ? (double)(item.getPrice() - item.getDiscountPrice()) / item.getPrice() * 100 : 0)) + "%)");
 
         }
 
+        // 남은 수량
+        if(item.isLimitAmount()) {
+            lore.add(ChatColor.GOLD + "남은 수량: " + item.getRemainAmount() + "/" + item.getLimitAmount() + "개");
+        }
+
+        // 판매 기간
+        if(item.isLimitDate()) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 원하는 형식 지정
+            lore.add(ChatColor.GOLD + "판매 기간: " + dateFormat.format(new Date(item.getLimitDate())) + "까지");
+        }
 
 
         // item.getLore()가 null이 아닐 때만 추가
         if (item.getLore() != null) {
-            lore.add("---- Lore ----");
+            lore.add(" ");
             lore.addAll(item.getLore());
         }
 
+        returnItemMeta.setLore(lore);
+        returnItemStack.setItemMeta(returnItemMeta);
 
-        return null;
+        return returnItemStack;
     }
 }
