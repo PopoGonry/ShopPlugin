@@ -150,35 +150,39 @@ public class Item implements ConfigurationSerializable {
         this.limitAmount = limitAmount;
     }
 
-    public boolean isLimitAmount() {
+    public boolean getIsLimitAmount() {
         return isLimitAmount;
     }
 
-    public boolean isLimitDate() {
+
+    public boolean getIsLimitDate() {
         return isLimitDate;
     }
 
-    public void setLimitAmount(boolean limitAmount) {
-        isLimitAmount = limitAmount;
-    }
 
     public long getLimitDate() {
         return limitDate;
     }
 
-    public void setLimitDate(Boolean limitDate) {
-        isLimitDate = limitDate;
-    }
 
-    public boolean isUseItemLore() {
+    public boolean getIsUseItemLore() {
         return isUseItemLore;
     }
 
-    public void setUseItemLore(boolean useItemLore) {
-        isUseItemLore = useItemLore;
-    }
 
     public void setLimitDate(long limitDate) {
         this.limitDate = limitDate;
+    }
+
+    public void setIsLimitAmount(boolean limitAmount) {
+        isLimitAmount = limitAmount;
+    }
+
+    public void setIsLimitDate(Boolean limitDate) {
+        isLimitDate = limitDate;
+    }
+
+    public void setIsUseItemLore(boolean useItemLore) {
+        isUseItemLore = useItemLore;
     }
 }

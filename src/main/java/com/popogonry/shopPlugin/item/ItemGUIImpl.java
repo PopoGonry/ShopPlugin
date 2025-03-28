@@ -48,10 +48,39 @@ public class ItemGUIImpl implements ItemGUI {
     public boolean openItemSettingGUI(Player player, Integer itemID) {
         Item item = ItemRepository.itemDataHashMap.get(itemID);
 
-        Inventory inventory = Bukkit.createInventory(player, 27, Reference.prefix_normal + item.getName() + " Setting GUI");
+        Inventory inventory = Bukkit.createInventory(player, 27, Reference.prefix_normal + "Item Setting GUI ID:" + itemID);
 
         inventory.setItem(4, getItemStackShopVer(itemID));
+        inventory.setItem(10, GUI.getCustomItemStack(Material.NAME_TAG, ChatColor.GOLD + "Item Name", Collections.singletonList(item.getName())));
+        inventory.setItem(11, GUI.getCustomItemStack(Material.BOOK, ChatColor.GOLD + "Item Lore", item.getLore()));
+        inventory.setItem(12, GUI.getCustomItemStack(Material.EMERALD, ChatColor.GOLD + "Item Price", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getPrice()))));
+        inventory.setItem(13, GUI.getCustomItemStack(Material.DIAMOND, ChatColor.GOLD + "Item Discount Price", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getDiscountPrice()))));
+        inventory.setItem(14, GUI.getCustomItemStack(Material.APPLE, ChatColor.GOLD + "Item Remain Amount", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getRemainAmount()))));
+        inventory.setItem(15, GUI.getCustomItemStack(Material.GOLDEN_APPLE, ChatColor.GOLD + "Item Limit Amount", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getLimitAmount()))));
 
+        if(item.getIsLimitAmount()) {
+            inventory.setItem(16, GUI.getCustomItemStack(Material.GREEN_CONCRETE, ChatColor.GREEN + "Limit Amount of Items", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getIsLimitAmount()))));
+        }
+        else {
+            inventory.setItem(16, GUI.getCustomItemStack(Material.RED_CONCRETE, ChatColor.RED + "Limit Amount of Items", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getIsLimitAmount()))));
+        }
+
+        inventory.setItem(20, GUI.getCustomItemStack(Material.CLOCK, ChatColor.GOLD + "Item Limit Date", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getLimitDate()))));
+
+        if(item.getIsLimitDate()) {
+            inventory.setItem(21, GUI.getCustomItemStack(Material.GREEN_CONCRETE, ChatColor.GREEN + "Limit Date of Items", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getIsLimitDate()))));
+        }
+        else {
+            inventory.setItem(21, GUI.getCustomItemStack(Material.RED_CONCRETE, ChatColor.RED + "Limit Date of Items", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getIsLimitDate()))));
+        }
+
+        if(item.getIsUseItemLore()) {
+            inventory.setItem(23, GUI.getCustomItemStack(Material.GREEN_CONCRETE, ChatColor.GREEN + "Use Item's Lore", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getIsUseItemLore()))));
+        }
+        else {
+            inventory.setItem(23, GUI.getCustomItemStack(Material.RED_CONCRETE, ChatColor.RED + "Use Item's Lore", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getIsUseItemLore()))));
+
+        }
 
         player.openInventory(inventory);
 
@@ -84,10 +113,10 @@ public class ItemGUIImpl implements ItemGUI {
         lore.add(ChatColor.GREEN + "할인 가격: " + ChatColor.YELLOW + item.getDiscountPrice());
         lore.add(ChatColor.GREEN + "남은 수량: " + ChatColor.YELLOW + item.getRemainAmount());
         lore.add(ChatColor.GREEN + "제한 수량: " + ChatColor.YELLOW + item.getLimitAmount());
-        lore.add(ChatColor.GREEN + "제한 여부: " + (item.isLimitAmount() ? ChatColor.YELLOW + "예" : ChatColor.YELLOW + "아니오"));
+        lore.add(ChatColor.GREEN + "제한 여부: " + (item.getIsLimitAmount() ? ChatColor.YELLOW + "예" : ChatColor.YELLOW + "아니오"));
         lore.add(ChatColor.GREEN + "제한 날짜: " + ChatColor.YELLOW + item.getLimitDate());
-        lore.add(ChatColor.GREEN + "날짜 제한 여부: " + (item.isLimitDate() ? ChatColor.YELLOW + "예" : ChatColor.YELLOW + "아니오"));
-        lore.add(ChatColor.GREEN + "아이템 로어 사용 여부: " + (item.isUseItemLore() ? ChatColor.YELLOW + "예" : ChatColor.YELLOW + "아니오"));
+        lore.add(ChatColor.GREEN + "날짜 제한 여부: " + (item.getIsLimitDate() ? ChatColor.YELLOW + "예" : ChatColor.YELLOW + "아니오"));
+        lore.add(ChatColor.GREEN + "아이템 로어 사용 여부: " + (item.getIsUseItemLore() ? ChatColor.YELLOW + "예" : ChatColor.YELLOW + "아니오"));
         lore.add(ChatColor.GRAY + "식별 코드: " + itemID);
 
         returnItemMeta.setLore(lore);
@@ -111,7 +140,7 @@ public class ItemGUIImpl implements ItemGUI {
         List<String> lore = new ArrayList<>();
 
         // 아이템스택 로어 추가
-        if(item.isLimitAmount()) {
+        if(item.getIsLimitAmount()) {
             List<String> itemStackLore = item.getItemStack().getLore();
             if (itemStackLore != null) {
                 lore.addAll(itemStackLore);
@@ -138,12 +167,12 @@ public class ItemGUIImpl implements ItemGUI {
         }
 
         // 남은 수량
-        if(item.isLimitAmount()) {
+        if(item.getIsLimitAmount()) {
             lore.add(ChatColor.GOLD + "남은 수량: " + item.getRemainAmount() + "/" + item.getLimitAmount() + "개");
         }
 
         // 판매 기간
-        if(item.isLimitDate()) {
+        if(item.getIsLimitDate()) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 원하는 형식 지정
             lore.add(ChatColor.GOLD + "판매 기간: " + dateFormat.format(new Date(item.getLimitDate())) + "까지");
         }
