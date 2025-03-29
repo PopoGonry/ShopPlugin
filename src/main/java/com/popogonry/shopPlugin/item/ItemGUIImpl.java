@@ -65,7 +65,8 @@ public class ItemGUIImpl implements ItemGUI {
             inventory.setItem(16, GUI.getCustomItemStack(Material.RED_CONCRETE, ChatColor.RED + "Limit Amount of Items", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getIsLimitAmount()))));
         }
 
-        inventory.setItem(20, GUI.getCustomItemStack(Material.CLOCK, ChatColor.GOLD + "Item Limit Date", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getLimitDate()))));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 원하는 형식 지정
+        inventory.setItem(20, GUI.getCustomItemStack(Material.CLOCK, ChatColor.GOLD + "Item Limit Date", Collections.singletonList(ChatColor.WHITE + dateFormat.format(new Date(item.getLimitDate())))));
 
         if(item.getIsLimitDate()) {
             inventory.setItem(21, GUI.getCustomItemStack(Material.GREEN_CONCRETE, ChatColor.GREEN + "Limit Date of Items", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getIsLimitDate()))));
@@ -81,6 +82,8 @@ public class ItemGUIImpl implements ItemGUI {
             inventory.setItem(23, GUI.getCustomItemStack(Material.RED_CONCRETE, ChatColor.RED + "Use Item's Lore", Collections.singletonList(ChatColor.WHITE + String.valueOf(item.getIsUseItemLore()))));
 
         }
+        inventory.setItem(26, GUI.getCustomItemStack(Material.PAPER, ChatColor.GOLD + "Return to Item List"));
+
 
         player.openInventory(inventory);
 
@@ -111,13 +114,19 @@ public class ItemGUIImpl implements ItemGUI {
         // 정보 추가 (색상 포함)
         lore.add(ChatColor.GREEN + "가격: " + ChatColor.YELLOW + item.getPrice());
         lore.add(ChatColor.GREEN + "할인 가격: " + ChatColor.YELLOW + item.getDiscountPrice());
-        lore.add(ChatColor.GREEN + "남은 수량: " + ChatColor.YELLOW + item.getRemainAmount());
+        lore.add(ChatColor.GREEN + "잔여 수량: " + ChatColor.YELLOW + item.getRemainAmount());
         lore.add(ChatColor.GREEN + "제한 수량: " + ChatColor.YELLOW + item.getLimitAmount());
         lore.add(ChatColor.GREEN + "제한 여부: " + (item.getIsLimitAmount() ? ChatColor.YELLOW + "예" : ChatColor.YELLOW + "아니오"));
-        lore.add(ChatColor.GREEN + "제한 날짜: " + ChatColor.YELLOW + item.getLimitDate());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 원하는 형식 지정
+        lore.add(ChatColor.GREEN + "제한 날짜: " + ChatColor.YELLOW + dateFormat.format(new Date(item.getLimitDate())));
         lore.add(ChatColor.GREEN + "날짜 제한 여부: " + (item.getIsLimitDate() ? ChatColor.YELLOW + "예" : ChatColor.YELLOW + "아니오"));
         lore.add(ChatColor.GREEN + "아이템 로어 사용 여부: " + (item.getIsUseItemLore() ? ChatColor.YELLOW + "예" : ChatColor.YELLOW + "아니오"));
         lore.add(ChatColor.GRAY + "식별 코드: " + itemID);
+
+        lore.add("---------------------");
+        lore.add(ChatColor.GOLD + "- 좌클릭: 아이템 설정 GUI");
+        lore.add(ChatColor.GOLD + "- 쉬프트 + 우클릭: 아이템 제거");
+        lore.add(ChatColor.GOLD + "- 플레이어 인벤토리 좌클릭: 아이템 추가");
 
         returnItemMeta.setLore(lore);
         returnItemStack.setItemMeta(returnItemMeta);
@@ -140,7 +149,7 @@ public class ItemGUIImpl implements ItemGUI {
         List<String> lore = new ArrayList<>();
 
         // 아이템스택 로어 추가
-        if(item.getIsLimitAmount()) {
+        if(item.getIsUseItemLore()) {
             List<String> itemStackLore = item.getItemStack().getLore();
             if (itemStackLore != null) {
                 lore.addAll(itemStackLore);
@@ -150,16 +159,17 @@ public class ItemGUIImpl implements ItemGUI {
                 lore.add(" ");
             }
         }
+        else {
+            lore.add(" ");
+        }
 
         // 할인 X
         if(item.getPrice() == item.getDiscountPrice()) {
-            lore.add(ChatColor.GOLD + "가격: " + item.getPrice());
+            lore.add(ChatColor.GOLD + "- 가격: " + item.getPrice());
         }
         // 할인 O
         else {
-//            lore.add(ChatColor.GOLD + "가격: " + "" + ChatColor.STRIKETHROUGH + item.getPrice() + ChatColor.RESET + ChatColor.GOLD + " => " + item.getDiscountPrice()
-//                    + " (" + String.format("%.1f", (item.getPrice() > 0 ? (double)(item.getPrice() - item.getDiscountPrice()) / item.getPrice() * 100 : 0)) + "%)");
-            lore.add(ChatColor.GOLD + "가격: " + ChatColor.RED + ChatColor.STRIKETHROUGH + item.getPrice() + "원" +
+            lore.add(ChatColor.GOLD + "- 가격: " + ChatColor.RED + ChatColor.STRIKETHROUGH + item.getPrice() + "원" +
                     ChatColor.RESET + ChatColor.GOLD + " => " + ChatColor.GREEN + item.getDiscountPrice() + "원" +
                     ChatColor.GRAY + " (" + String.format("%.1f",
                     (item.getPrice() > 0 ? (double)(item.getPrice() - item.getDiscountPrice()) / item.getPrice() * 100 : 0)) + "%)");
@@ -168,23 +178,25 @@ public class ItemGUIImpl implements ItemGUI {
 
         // 남은 수량
         if(item.getIsLimitAmount()) {
-            lore.add(ChatColor.GOLD + "남은 수량: " + item.getRemainAmount() + "/" + item.getLimitAmount() + "개");
+            lore.add(ChatColor.GOLD + "- 남은 수량: " + item.getRemainAmount() + "/" + item.getLimitAmount() + "개");
         }
 
         // 판매 기간
         if(item.getIsLimitDate()) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 원하는 형식 지정
-            lore.add(ChatColor.GOLD + "판매 기간: " + dateFormat.format(new Date(item.getLimitDate())) + "까지");
+            lore.add(ChatColor.GOLD + "- 판매 기간: " + dateFormat.format(new Date(item.getLimitDate())) + "까지");
         }
 
 
         // item.getLore()가 null이 아닐 때만 추가
-        if (item.getLore() != null) {
+        if (!item.getLore().isEmpty()) {
             lore.add(" ");
             lore.addAll(item.getLore());
         }
 
+
         returnItemMeta.setLore(lore);
+
         returnItemStack.setItemMeta(returnItemMeta);
 
         return returnItemStack;

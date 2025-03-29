@@ -1,11 +1,12 @@
 package com.popogonry.shopPlugin;
 
-public enum ChatInputMode {
+public enum InputMode {
     ItemName,
     ItemLore,
     ItemPrice,
     ItemDiscountPrice,
     ItemRemainAmount,
     ItemLimitAmount,
-    ItemLimitDate
+    ItemLimitDate,
+    ItemStack
 }
