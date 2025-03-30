@@ -1,6 +1,7 @@
-package com.popogonry.shopPlugin;
+package com.popogonry.shopPlugin.item;
 
-public enum InputMode {
+
+public enum ItemInputMode {
     ItemName,
     ItemLore,
     ItemPrice,

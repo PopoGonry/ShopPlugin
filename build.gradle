@@ -56,3 +56,5 @@ jar {
         attributes 'Main-Class': 'com.popogonry.shopPlugin.ShopPlugin'
     }
 }
+
+

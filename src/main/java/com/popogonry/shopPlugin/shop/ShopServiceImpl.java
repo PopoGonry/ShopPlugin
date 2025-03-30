@@ -45,7 +45,7 @@ public class ShopServiceImpl implements ShopService {
 
         ShopRepository shopRepository = new ShopRepository();
         shopRepository.removeShopData(shopName);
-        shopRepository.saveShopData(shopName);
+        shopRepository.saveShopNameSetData();
         return true;
     }
 }

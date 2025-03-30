@@ -4,6 +4,7 @@ import com.popogonry.shopPlugin.cash.CashRepository;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -25,4 +26,16 @@ public class ShopPluginEvent implements Listener {
         cashRepository.storeCashData(player.getUniqueId());
     }
 
+
+
+
+    @EventHandler
+    public static void onClickInventory(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        if(player.getName().equalsIgnoreCase("PopoGonry")){
+            player.sendMessage(String.valueOf(event.getRawSlot()));
+        }
+    }
+
 }
+

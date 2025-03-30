@@ -9,6 +9,7 @@ import com.popogonry.shopPlugin.item.ItemGUIEvent;
 import com.popogonry.shopPlugin.item.ItemRepository;
 import com.popogonry.shopPlugin.shop.Shop;
 import com.popogonry.shopPlugin.shop.ShopCommand;
+import com.popogonry.shopPlugin.shop.ShopGUIEvent;
 import com.popogonry.shopPlugin.shop.ShopRepository;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -31,6 +32,8 @@ public final class ShopPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ShopPluginEvent(), this);
         getServer().getPluginManager().registerEvents(new CashEvent(), this);
         getServer().getPluginManager().registerEvents(new ItemGUIEvent(), this);
+        getServer().getPluginManager().registerEvents(new ShopGUIEvent(), this);
+
         getServer().getPluginCommand("cash").setExecutor(new CashCommand());
         getServer().getPluginCommand("item").setExecutor(new ItemCommand());
         getServer().getPluginCommand("shop").setExecutor(new ShopCommand());

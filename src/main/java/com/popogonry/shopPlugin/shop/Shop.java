@@ -1,32 +1,28 @@
 package com.popogonry.shopPlugin.shop;
 
-import com.popogonry.shopPlugin.item.Item;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Shop implements ConfigurationSerializable {
 
     private String name;
     private HashMap<Integer, Integer> itemHashMap = new HashMap<>();
-    private int col;
+    private int size;
 
 
     public Shop(String name, HashMap<Integer, Integer> itemHashMap) {
         this.name = name;
         this.itemHashMap = itemHashMap;
-        this.col = 6;
+        this.size = 1;
     }
 
-    public Shop(String name, HashMap<Integer, Integer> itemHashMap, int col) {
+    public Shop(String name, HashMap<Integer, Integer> itemHashMap, int size) {
         this.name = name;
         this.itemHashMap = itemHashMap;
-        this.col = col;
+        this.size = size;
     }
 
     @Override
@@ -35,7 +31,7 @@ public class Shop implements ConfigurationSerializable {
 
         map.put("name", name);
         map.put("itemHashMap", itemHashMap);
-        map.put("col", col);
+        map.put("col", size);
 
         return map;
     }
@@ -54,7 +50,7 @@ public class Shop implements ConfigurationSerializable {
         return "Shop{" +
                 "name='" + name + '\'' +
                 ", itemHashMap=" + itemHashMap +
-                ", col=" + col +
+                ", col=" + size +
                 '}';
     }
 
@@ -74,11 +70,11 @@ public class Shop implements ConfigurationSerializable {
         this.itemHashMap = itemHashMap;
     }
 
-    public int getCol() {
-        return col;
+    public int getSize() {
+        return size;
     }
 
-    public void setCol(int col) {
-        this.col = col;
+    public void setSize(int size) {
+        this.size = size;
     }
 }

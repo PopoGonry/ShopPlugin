@@ -41,8 +41,12 @@ public class ItemGUIEvent implements Listener {
             ItemGUI itemGUI = new ItemGUIImpl();
             ItemService itemService = new ItemServiceImpl();
 
+            String[] strings1 = inventory.getItem(49).getItemMeta().getDisplayName().split("/");
+            String[] strings2 = strings1[0].split(" ");
+            int page = Integer.parseInt(strings2[1].replaceAll(" ", ""));
+
             // Item List
-            if(0 <= slot && slot <= 45) {
+            if(0 <= slot && slot <= 44) {
                 if(event.getClick().isLeftClick()) {
                     ItemStack itemStack = inventory.getItem(slot);
                     ItemMeta itemMeta = itemStack.getItemMeta();
@@ -77,7 +81,7 @@ public class ItemGUIEvent implements Listener {
                     }
 
                     player.sendMessage(Reference.prefix_normal + inventory.getItem(slot).getItemMeta().getDisplayName() + " 아이템이 제거 되었습니다.");
-                    itemGUI.openItemListGUI(player, 1);
+                    itemGUI.openItemListGUI(player, page);
 
                 }
 
@@ -130,21 +134,21 @@ public class ItemGUIEvent implements Listener {
             switch (slot) {
                 // ItemStack
                 case 4:
-                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), InputMode.ItemStack);
+                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), ItemInputMode.ItemStack);
                     player.closeInventory();
                     player.sendMessage(Reference.prefix_normal + "아이템을 던져주세요. ( 취소: -c )");
                     break;
 
                 // Name
                 case 10:
-                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), InputMode.ItemName);
+                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), ItemInputMode.ItemName);
                     player.closeInventory();
                     player.sendMessage(Reference.prefix_normal + "이름을 입력 해주세요. ( 취소: -c )");
                     break;
 
                 // Lore
                 case 11:
-                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), InputMode.ItemLore);
+                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), ItemInputMode.ItemLore);
                     player.closeInventory();
                     player.sendMessage(Reference.prefix_normal + "책과 깃펜의 한 장당 한 줄의 설명을 적은 후, 던져주세요. ( 취소: -c )");
                     player.getInventory().addItem(new ItemStack(Material.WRITABLE_BOOK));
@@ -153,7 +157,7 @@ public class ItemGUIEvent implements Listener {
 
                 // Price
                 case 12:
-                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), InputMode.ItemPrice);
+                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), ItemInputMode.ItemPrice);
                     player.closeInventory();
                     player.sendMessage(Reference.prefix_normal + "가격을 입력 해주세요. ( 취소: -c )");
                     break;
@@ -161,7 +165,7 @@ public class ItemGUIEvent implements Listener {
 
                 // Discount Price
                 case 13:
-                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), InputMode.ItemDiscountPrice);
+                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), ItemInputMode.ItemDiscountPrice);
                     player.closeInventory();
                     player.sendMessage(Reference.prefix_normal + "할인 가격을 입력 해주세요. ( 취소: -c )");
                     break;
@@ -169,7 +173,7 @@ public class ItemGUIEvent implements Listener {
 
                 // Remain Amount
                 case 14:
-                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), InputMode.ItemRemainAmount);
+                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), ItemInputMode.ItemRemainAmount);
                     player.closeInventory();
                     player.sendMessage(Reference.prefix_normal + "잔여 수량을 입력 해주세요. ( 취소: -c )");
                     break;
@@ -177,7 +181,7 @@ public class ItemGUIEvent implements Listener {
 
                 // Limit Amount
                 case 15:
-                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), InputMode.ItemLimitAmount);
+                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), ItemInputMode.ItemLimitAmount);
                     player.closeInventory();
                     player.sendMessage(Reference.prefix_normal + "제한 수량을 입력 해주세요. ( 취소: -c )");
                     break;
@@ -197,7 +201,7 @@ public class ItemGUIEvent implements Listener {
 
                 // Limit Date
                 case 20:
-                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), InputMode.ItemLimitDate);
+                    ShopPluginRepository.playerInputModeHashMap.put(player.getUniqueId(), ItemInputMode.ItemLimitDate);
                     player.closeInventory();
                     player.sendMessage(Reference.prefix_normal + "제한 날짜를 yyyy-MM-dd HH:mm 형식으로 입력 해주세요. ( 취소: -c )");
                     break;
@@ -242,24 +246,12 @@ public class ItemGUIEvent implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        if(ShopPluginRepository.playerInputModeHashMap.containsKey(event.getPlayer().getUniqueId())) {
+        if(ShopPluginRepository.playerInputModeHashMap.getOrDefault(event.getPlayer().getUniqueId(), null) instanceof ItemInputMode) {
             event.setCancelled(true);
 
             Player player = event.getPlayer();
 
-            InputMode mode = ShopPluginRepository.playerInputModeHashMap.get(player.getUniqueId());
-
-
-            boolean isItemChat = false;
-            for (InputMode value : InputMode.values()) {
-                if(mode == value) {
-                    isItemChat = true;
-                    break;
-                }
-            }
-            if(!isItemChat) {
-                return;
-            }
+            ItemInputMode mode = (ItemInputMode) ShopPluginRepository.playerInputModeHashMap.get(player.getUniqueId());
 
 
             String[] strings = ShopPluginRepository.playerCurrentInventoryTitleHashMap.get(player.getUniqueId()).split("ID:");
@@ -279,7 +271,7 @@ public class ItemGUIEvent implements Listener {
                 return;
             }
 
-            else if(StringUtils.isNumeric(event.getMessage())) {
+            else if(StringUtils.isNumeric(event.getMessage()) && mode != ItemInputMode.ItemName) {
                 int value = Integer.parseInt(event.getMessage());
 
                 switch(mode) {
@@ -298,12 +290,10 @@ public class ItemGUIEvent implements Listener {
                         player.sendMessage(Reference.prefix_normal + item.getName() + " 아이템의 잔여 수량이 " + item.getRemainAmount() + "로 변경 되었습니다.");
                         break;
 
-
                     case ItemLimitAmount:
                         item.setLimitAmount(value);
                         player.sendMessage(Reference.prefix_normal + item.getName() + " 아이템의 제한 수량이 " + item.getLimitAmount() + "로 변경 되었습니다.");
                         break;
-
 
                     default:
                         player.sendMessage(Reference.prefix_normal + "잘못된 입력입니다.");
@@ -312,7 +302,7 @@ public class ItemGUIEvent implements Listener {
 
                 }
 
-                if(mode == InputMode.ItemPrice || mode == InputMode.ItemDiscountPrice || mode == InputMode.ItemRemainAmount || mode == InputMode.ItemLimitAmount) {
+                if(mode == ItemInputMode.ItemPrice || mode == ItemInputMode.ItemDiscountPrice || mode == ItemInputMode.ItemRemainAmount || mode == ItemInputMode.ItemLimitAmount) {
                     ShopPluginRepository.playerInputModeHashMap.remove(player.getUniqueId());
                     ShopPluginRepository.playerCurrentInventoryTitleHashMap.remove(player.getUniqueId());
 
@@ -362,7 +352,7 @@ public class ItemGUIEvent implements Listener {
                         break;
                 }
 
-                if(mode == InputMode.ItemName) {
+                if(mode == ItemInputMode.ItemName) {
                     ShopPluginRepository.playerInputModeHashMap.remove(player.getUniqueId());
                     ShopPluginRepository.playerCurrentInventoryTitleHashMap.remove(player.getUniqueId());
 
@@ -382,9 +372,10 @@ public class ItemGUIEvent implements Listener {
 
     @EventHandler
     public void onDropPlayerItem(PlayerDropItemEvent event) {
-        if(ShopPluginRepository.playerInputModeHashMap.containsKey(event.getPlayer().getUniqueId())) {
-            InputMode mode = ShopPluginRepository.playerInputModeHashMap.get(event.getPlayer().getUniqueId());
-            if (mode == InputMode.ItemLore || mode == InputMode.ItemStack) {
+        if(ShopPluginRepository.playerInputModeHashMap.getOrDefault(event.getPlayer().getUniqueId(), null) instanceof ItemInputMode) {
+            ItemInputMode mode = (ItemInputMode) ShopPluginRepository.playerInputModeHashMap.get(event.getPlayer().getUniqueId());
+
+            if (mode == ItemInputMode.ItemLore || mode == ItemInputMode.ItemStack) {
                 event.setCancelled(true);
                 Player player = event.getPlayer();
                 ItemGUI itemGUI = new ItemGUIImpl();
@@ -393,7 +384,7 @@ public class ItemGUIEvent implements Listener {
                 Integer itemID = Integer.parseInt(strings[1].replaceAll(" ", ""));
                 Item item = ItemRepository.itemDataHashMap.get(itemID);
 
-                if (mode == InputMode.ItemLore && event.getItemDrop().getItemStack().getType() == Material.WRITABLE_BOOK) {
+                if (mode == ItemInputMode.ItemLore && event.getItemDrop().getItemStack().getType() == Material.WRITABLE_BOOK) {
                     ItemStack itemStack = event.getItemDrop().getItemStack();
                     BookMeta bookMeta = (BookMeta) itemStack.getItemMeta();
 
@@ -412,7 +403,7 @@ public class ItemGUIEvent implements Listener {
                     });
 
                 }
-                else if (mode == InputMode.ItemStack) {
+                else if (mode == ItemInputMode.ItemStack) {
                     player.sendMessage(Reference.prefix_normal + item.getName() + " 아이템이 " + event.getItemDrop().getItemStack().getItemMeta().getDisplayName() + "로 변경 되었습니다.");
                     item.setItemStack(event.getItemDrop().getItemStack());
                     item.setName(event.getItemDrop().getItemStack().getItemMeta().getDisplayName());
@@ -431,12 +422,4 @@ public class ItemGUIEvent implements Listener {
             }
         }
     }
-
-
-//
-//    @EventHandler
-//    public static void onClickInventory(InventoryClickEvent event) {
-//        Player player = (Player) event.getWhoClicked();
-//        player.sendMessage(String.valueOf(event.getRawSlot()));
-//    }
 }

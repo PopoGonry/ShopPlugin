@@ -107,7 +107,7 @@ public class ItemGUIImpl implements ItemGUI {
 
         // item.getLore()가 null이 아닐 때만 추가
         if (item.getLore() != null) {
-            lore.add("---- Lore ----");
+            lore.add(ChatColor.WHITE + "---- Lore ----");
             lore.addAll(item.getLore());
         }
 
@@ -123,7 +123,7 @@ public class ItemGUIImpl implements ItemGUI {
         lore.add(ChatColor.GREEN + "아이템 로어 사용 여부: " + (item.getIsUseItemLore() ? ChatColor.YELLOW + "예" : ChatColor.YELLOW + "아니오"));
         lore.add(ChatColor.GRAY + "식별 코드: " + itemID);
 
-        lore.add("---------------------");
+        lore.add(ChatColor.WHITE + "---------------------");
         lore.add(ChatColor.GOLD + "- 좌클릭: 아이템 설정 GUI");
         lore.add(ChatColor.GOLD + "- 쉬프트 + 우클릭: 아이템 제거");
         lore.add(ChatColor.GOLD + "- 플레이어 인벤토리 좌클릭: 아이템 추가");
