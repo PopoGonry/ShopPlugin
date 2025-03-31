@@ -105,6 +105,8 @@ public class ItemGUIEvent implements Listener {
                 int maxPage = ItemRepository.itemIdSet.size() / 45;
                 maxPage += ItemRepository.itemIdSet.size() % 45 == 0 ? 0 : 1;
                 itemGUI.openItemListGUI(player, maxPage);
+
+                player.sendMessage(event.getCurrentItem().toString());
             }
 
 

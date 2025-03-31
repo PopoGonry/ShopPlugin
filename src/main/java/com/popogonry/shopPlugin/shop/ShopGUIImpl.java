@@ -167,6 +167,30 @@ public class ShopGUIImpl implements ShopGUI {
 
     @Override
     public boolean openShopGUI(Player player, String shopName, int page) {
-        return false;
+        Inventory inventory = Bukkit.createInventory(player, 54, "cashshopmenu");
+
+        Shop shop = ShopRepository.shopDataHashMap.get(shopName);
+
+        ItemGUI itemGUI = new ItemGUIImpl();
+
+        for(int i = 0; i < 45; i++) {
+            if(shop.getItemHashMap().containsKey(i + 45 *(page-1))) {
+                inventory.setItem(i, itemGUI.getItemStackShopVer(shop.getItemHashMap().get(i + 45 *(page-1))));
+            }
+        }
+
+        inventory.setItem(49, GUI.getCustomItemStack(Material.EMERALD, Reference.prefix_normal + shop.getName(), Collections.singletonList(ChatColor.WHITE + "- Page " + page + " / " + shop.getSize())));
+
+        if(page > 1) {
+            inventory.setItem(48, GUI.getCustomItemStack(Material.PAPER, Reference.prefix + "To " + (page - 1)));
+        }
+
+        if(page < shop.getSize()) {
+            inventory.setItem(50, GUI.getCustomItemStack(Material.PAPER, Reference.prefix + "To " + (page + 1)));
+        }
+
+        player.openInventory(inventory);
+
+        return true;
     }
 }

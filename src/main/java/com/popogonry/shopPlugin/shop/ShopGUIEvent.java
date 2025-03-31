@@ -3,11 +3,14 @@ package com.popogonry.shopPlugin.shop;
 import com.popogonry.shopPlugin.Reference;
 import com.popogonry.shopPlugin.ShopPlugin;
 import com.popogonry.shopPlugin.ShopPluginRepository;
+import com.popogonry.shopPlugin.cash.CashService;
+import com.popogonry.shopPlugin.cash.CashServiceImpl;
 import com.popogonry.shopPlugin.item.*;
 import it.unimi.dsi.fastutil.Hash;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -51,6 +54,9 @@ public class ShopGUIEvent implements Listener {
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 if(event.getClick().isLeftClick()) {
                     shopGUI.openShopSettingGUI(player, itemMeta.getDisplayName());
+                }
+                else if(event.getClick().isRightClick()) {
+                    shopGUI.openShopGUI(player, itemMeta.getDisplayName(), 1);
                 }
                 else if(event.getClick().isRightClick() && event.getClick().isShiftClick()) {
                     shopService.removeShop(itemMeta.getDisplayName());
@@ -259,6 +265,101 @@ public class ShopGUIEvent implements Listener {
             // Return
             else if(slot == 53) {
                 shopGUI.openShopItemSettingGUI(player, shopName, page);
+            }
+        }
+    }
+
+    @EventHandler
+    public static void onClickShopGUI(InventoryClickEvent event) {
+        if(event.getView().getTitle().equalsIgnoreCase("cashshopmenu")
+                && event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
+
+            event.setCancelled(true);
+
+            Player player = (Player) event.getWhoClicked();
+            Inventory inventory = event.getInventory();
+
+            int slot = event.getRawSlot();
+
+
+            ShopGUI shopGUI = new ShopGUIImpl();
+            ShopService shopService = new ShopServiceImpl();
+
+            Shop shop = ShopRepository.shopDataHashMap.get(inventory.getItem(49).getItemMeta().getDisplayName().split(" ")[1]);
+
+            // Item List
+            // 좌 클릭 아이템 배치, 아이템 리스트로 / 우클릭 아이템 세팅으로
+
+            String[] strings1 = inventory.getItem(49).getItemMeta().getLore().get(0).split("/");
+            String[] strings2 = strings1[0].split(" ");
+            int page = Integer.parseInt(strings2[2].replaceAll(" ", ""));
+
+            if(0 <= slot && slot <= 44) {
+                if(event.getClick().isLeftClick()) {
+                    HashMap<Integer, Integer> shopItemHashMap = shop.getItemHashMap();
+
+                    Item item = ItemRepository.itemDataHashMap.get(shop.getItemHashMap().get(slot + ((page - 1) * 45)));
+
+                    // 갯수 제한을 하는데, 남은 갯수가 0개 이하일경우,
+                    if(item.getIsLimitAmount() && item.getRemainAmount() <= 0) {
+                        player.sendMessage(Reference.prefix_error + "남은 수량이 없습니다.");
+                        return;
+                    }
+
+                    // 날짜 제한을 하는데, 제한 날짜 현재 날짜가 뒤인경우
+                    if(item.getIsLimitDate()) {
+                        Date limitDate = new Date(item.getLimitDate());
+                        if(new Date().compareTo(limitDate) > 0) {
+                            player.sendMessage(Reference.prefix_error + "판매 기간이 지났습니다.");
+                            return;
+                        }
+                    }
+
+                    // 캐시가 부족할 때,
+                    CashService cashService = new CashServiceImpl();
+                    if(cashService.getCash(player.getUniqueId()) < item.getDiscountPrice()) {
+                        player.sendMessage(Reference.prefix_error + "캐시가 부족합니다.");
+                        return;
+                    }
+
+                    // 인벤토리 공간 확인
+                    boolean hasEmptySlot = false;
+                    for(int playerInventorySlot = 0; playerInventorySlot < 36; playerInventorySlot++) {
+                        ItemStack itemStack = player.getInventory().getItem(playerInventorySlot);
+                        if(itemStack == null || itemStack.getType() == Material.AIR) hasEmptySlot = true;
+                    }
+
+                    if(!hasEmptySlot) {
+                        player.sendMessage(Reference.prefix_error + "인벤토리에 빈 공간이 없습니다.");
+                        return;
+                    }
+
+                    // 아이템 지급
+                    player.getInventory().addItem(item.getItemStack());
+                    player.sendMessage(item.getItemStack().toString());
+                    // 캐시 차감
+                    cashService.setCash(player.getUniqueId(), cashService.getCash(player.getUniqueId()) - item.getDiscountPrice());
+
+                    // 남은 갯수 차감
+                    if(item.getIsLimitAmount()) {
+                        item.setRemainAmount(item.getRemainAmount()-1);
+                    }
+
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+                    player.sendMessage(Reference.prefix_normal + item.getName() + " 아이템을 구매 하였습니다.");
+                    player.sendMessage(Reference.prefix_normal + player.getName() + "의 캐시 : " + cashService.getCash(player.getUniqueId()));
+
+                    shopGUI.openShopGUI(player, shop.getName(), page);
+                }
+            }
+            else if(48 <= slot && slot <= 50) {
+                ItemStack itemStack = inventory.getItem(slot);
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                if(itemMeta.getDisplayName().contains("To")) {
+                    String[] strings = itemMeta.getDisplayName().split(" ");
+                    shopGUI.openShopGUI(player, shop.getName(), Integer.parseInt(strings[1]));
+                }
+                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
             }
         }
     }
