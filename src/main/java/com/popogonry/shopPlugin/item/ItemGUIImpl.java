@@ -95,7 +95,7 @@ public class ItemGUIImpl implements ItemGUI {
     public ItemStack getItemStack(Integer itemID) {
         Item item = ItemRepository.itemDataHashMap.get(itemID);
 
-        ItemStack returnItemStack = new ItemStack(item.getItemStack().getType());
+        ItemStack returnItemStack = new ItemStack(item.getItemStack());
         ItemMeta returnItemMeta = returnItemStack.getItemMeta();
 
         returnItemMeta.setDisplayName(item.getName());
@@ -138,7 +138,7 @@ public class ItemGUIImpl implements ItemGUI {
     public ItemStack getItemStackShopVer(Integer itemID) {
         Item item = ItemRepository.itemDataHashMap.get(itemID);
 
-        ItemStack returnItemStack = new ItemStack(item.getItemStack().getType());
+        ItemStack returnItemStack = new ItemStack(item.getItemStack());
         ItemMeta returnItemMeta = returnItemStack.getItemMeta();
 
         // 이름 세팅

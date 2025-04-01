@@ -12,9 +12,12 @@ import com.popogonry.shopPlugin.shop.ShopCommand;
 import com.popogonry.shopPlugin.shop.ShopGUIEvent;
 import com.popogonry.shopPlugin.shop.ShopRepository;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.*;
 
 public final class ShopPlugin extends JavaPlugin {
 
@@ -35,8 +38,8 @@ public final class ShopPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ShopGUIEvent(), this);
 
         getServer().getPluginCommand("cash").setExecutor(new CashCommand());
-        getServer().getPluginCommand("item").setExecutor(new ItemCommand());
-        getServer().getPluginCommand("shop").setExecutor(new ShopCommand());
+        getServer().getPluginCommand("cashitem").setExecutor(new ItemCommand());
+        getServer().getPluginCommand("cashshop").setExecutor(new ShopCommand());
 
 
 //         player cash data load

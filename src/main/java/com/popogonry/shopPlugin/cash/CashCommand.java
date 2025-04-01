@@ -93,33 +93,34 @@ public class CashCommand implements CommandExecutor {
                     }
                     return true;
                 }
+                else if(strings[0].equalsIgnoreCase("paper")) {
+
+                    // check cash
+                    if(cashService.getCash(player.getUniqueId()) < Integer.parseInt(strings[1])) {
+                        player.sendMessage(Reference.prefix_error + "캐시가 부족합니다.");
+                        return false;
+                    }
+
+                    // check space from inv
+                    boolean hasEmptySlot = false;
+                    for(int slot = 0; slot < 36; slot++) {
+                        ItemStack itemStack = player.getInventory().getItem(slot);
+                        if(itemStack == null || itemStack.getType() == Material.AIR) hasEmptySlot = true;
+                    }
+
+                    if(hasEmptySlot) {
+                        player.getInventory().addItem(cashService.printPaper(player.getUniqueId(), Integer.parseInt(strings[1]), 1));
+                        cashService.setCash(player.getUniqueId(), cashService.getCash(player.getUniqueId()) - Integer.parseInt(strings[1]));
+                        player.sendMessage(Reference.prefix_normal + strings[1] + "캐시 수표가 " + 1 + "개 발행되었습니다.");
+                        player.sendMessage(Reference.prefix_normal + player.getName() + "의 캐시 : " + cashService.getCash(player.getUniqueId()));
+                    }
+                    else {
+                        player.sendMessage(Reference.prefix_error + "인벤토리에 빈 공간이 없습니다.");
+                    }
+                    return true;
+                }
             }
-            if(strings[0].equalsIgnoreCase("paper")) {
 
-                // check cash
-                if(cashService.getCash(player.getUniqueId()) < Integer.parseInt(strings[1])) {
-                    player.sendMessage(Reference.prefix_error + "캐시가 부족합니다.");
-                    return false;
-                }
-
-                // check space from inv
-                boolean hasEmptySlot = false;
-                for(int slot = 0; slot < 36; slot++) {
-                    ItemStack itemStack = player.getInventory().getItem(slot);
-                    if(itemStack == null || itemStack.getType() == Material.AIR) hasEmptySlot = true;
-                }
-
-                if(hasEmptySlot) {
-                    player.getInventory().addItem(cashService.printPaper(player.getUniqueId(), Integer.parseInt(strings[1]), 1));
-                    cashService.setCash(player.getUniqueId(), cashService.getCash(player.getUniqueId()) - Integer.parseInt(strings[1]));
-                    player.sendMessage(Reference.prefix_normal + strings[1] + "캐시 수표가 " + 1 + "개 발행되었습니다.");
-                    player.sendMessage(Reference.prefix_normal + player.getName() + "의 캐시 : " + cashService.getCash(player.getUniqueId()));
-                }
-                else {
-                    player.sendMessage(Reference.prefix_error + "인벤토리에 빈 공간이 없습니다.");
-                }
-                return true;
-            }
         }
         else if(strings.length == 3) {
             if(player.isOp()) {
@@ -182,7 +183,7 @@ public class CashCommand implements CommandExecutor {
         }
         player.sendMessage(Reference.prefix_normal + "Cash Command");
         player.sendMessage(Reference.prefix_normal + "/cash check" + ChatColor.GRAY + " : 캐시를 확인합니다.");
-        player.sendMessage(Reference.prefix_normal + "/cash paper [cash] [amount]" + ChatColor.GRAY + " : [cash] 캐시 수표를 [amount] 만큼 발행합니다.");
+//        player.sendMessage(Reference.prefix_normal + "/cash paper [cash] [amount]" + ChatColor.GRAY + " : [cash] 캐시 수표를 [amount] 만큼 발행합니다.");
         return false;
     }
 }

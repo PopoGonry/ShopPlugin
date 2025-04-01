@@ -3,9 +3,12 @@ package com.popogonry.shopPlugin.shop;
 import com.popogonry.shopPlugin.ShopPlugin;
 import com.popogonry.shopPlugin.item.Item;
 import com.popogonry.shopPlugin.item.ItemDataConfig;
+import com.popogonry.shopPlugin.item.ItemRepository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class ShopRepository {
 
@@ -44,7 +47,20 @@ public class ShopRepository {
     }
 
     public void loadShopData(String shopName) {
-        shopDataHashMap.put(shopName, shopDataConfig.loadShopData(shopName));
+        Shop shop = shopDataConfig.loadShopData(shopName);
+        HashMap<Integer, Integer> shopItemHashMap = shop.getItemHashMap();
+
+        List<Integer> keys = new ArrayList<>(shopItemHashMap.keySet());
+
+        for (Integer i : keys) {
+            if(!ItemRepository.itemIdSet.contains(shopItemHashMap.get(i))) {
+                shopItemHashMap.remove(i);
+            }
+        }
+        shop.setItemHashMap(shopItemHashMap);
+
+        shopDataHashMap.put(shopName, shop);
+
     }
     public void removeShopData(String shopName) {
         shopDataConfig.removeShopData(shopName);

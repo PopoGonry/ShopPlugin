@@ -102,7 +102,14 @@ public class ShopGUIImpl implements ShopGUI {
 
         for(int i = 0; i < 45; i++) {
             if(shop.getItemHashMap().containsKey(i + 45 *(page-1))) {
-                inventory.setItem(i, itemGUI.getItemStackShopVer(shop.getItemHashMap().get(i + 45 *(page-1))));
+                int itemID = shop.getItemHashMap().get(i + 45 *(page-1));
+
+                if(ItemRepository.itemIdSet.contains(itemID)) {
+                    inventory.setItem(i, itemGUI.getItemStackShopVer(itemID));
+                }
+                else {
+                    shop.getItemHashMap().remove(i + 45 *(page-1));
+                }
             }
         }
 
@@ -175,7 +182,14 @@ public class ShopGUIImpl implements ShopGUI {
 
         for(int i = 0; i < 45; i++) {
             if(shop.getItemHashMap().containsKey(i + 45 *(page-1))) {
-                inventory.setItem(i, itemGUI.getItemStackShopVer(shop.getItemHashMap().get(i + 45 *(page-1))));
+                int itemID = shop.getItemHashMap().get(i + 45 *(page-1));
+
+                if(ItemRepository.itemIdSet.contains(itemID)) {
+                    inventory.setItem(i, itemGUI.getItemStackShopVer(itemID));
+                }
+                else {
+                    shop.getItemHashMap().remove(i + 45 *(page-1));
+                }
             }
         }
 

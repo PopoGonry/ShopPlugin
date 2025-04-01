@@ -28,14 +28,14 @@ public class ShopPluginEvent implements Listener {
 
 
 
-
-    @EventHandler
-    public static void onClickInventory(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        if(player.getName().equalsIgnoreCase("PopoGonry")){
-            player.sendMessage(String.valueOf(event.getRawSlot()));
-        }
-    }
+//
+//    @EventHandler
+//    public static void onClickInventory(InventoryClickEvent event) {
+//        Player player = (Player) event.getWhoClicked();
+//        if(player.getName().equalsIgnoreCase("PopoGonry")){
+//            player.sendMessage(String.valueOf(event.getRawSlot()));
+//        }
+//    }
 
 }
 

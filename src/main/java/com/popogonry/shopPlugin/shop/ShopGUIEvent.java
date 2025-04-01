@@ -281,11 +281,12 @@ public class ShopGUIEvent implements Listener {
 
             int slot = event.getRawSlot();
 
-
             ShopGUI shopGUI = new ShopGUIImpl();
             ShopService shopService = new ShopServiceImpl();
 
-            Shop shop = ShopRepository.shopDataHashMap.get(inventory.getItem(49).getItemMeta().getDisplayName().split(" ")[1]);
+            String displayName = inventory.getItem(49).getItemMeta().getDisplayName();
+
+            Shop shop = ShopRepository.shopDataHashMap.get(displayName.substring(displayName.indexOf(" ") + 1));
 
             // Item List
             // 좌 클릭 아이템 배치, 아이템 리스트로 / 우클릭 아이템 세팅으로
@@ -296,8 +297,6 @@ public class ShopGUIEvent implements Listener {
 
             if(0 <= slot && slot <= 44) {
                 if(event.getClick().isLeftClick()) {
-                    HashMap<Integer, Integer> shopItemHashMap = shop.getItemHashMap();
-
                     Item item = ItemRepository.itemDataHashMap.get(shop.getItemHashMap().get(slot + ((page - 1) * 45)));
 
                     // 갯수 제한을 하는데, 남은 갯수가 0개 이하일경우,
@@ -336,7 +335,6 @@ public class ShopGUIEvent implements Listener {
 
                     // 아이템 지급
                     player.getInventory().addItem(item.getItemStack());
-                    player.sendMessage(item.getItemStack().toString());
                     // 캐시 차감
                     cashService.setCash(player.getUniqueId(), cashService.getCash(player.getUniqueId()) - item.getDiscountPrice());
 

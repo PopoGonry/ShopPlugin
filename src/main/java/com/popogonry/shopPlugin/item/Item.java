@@ -95,13 +95,12 @@ public class Item implements ConfigurationSerializable {
     }
 
     public ItemStack getItemStack() {
-        return itemStack;
+        return new ItemStack(itemStack);
     }
 
     public void setItemStack(ItemStack itemStack) {
         this.itemStack = itemStack;
     }
-
     public String getName() {
         return name;
     }
