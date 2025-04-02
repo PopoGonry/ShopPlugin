@@ -5,6 +5,8 @@ api-version: '1.21'
 commands:
   cash:
     description: cash
-  item:
-  shop:
+  cashitem:
+  cashshop:
 
+
+depend: ["PlaceholderAPI"]

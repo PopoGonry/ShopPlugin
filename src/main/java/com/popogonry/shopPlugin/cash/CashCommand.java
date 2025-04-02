@@ -1,6 +1,7 @@
 package com.popogonry.shopPlugin.cash;
 
 import com.popogonry.shopPlugin.Reference;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -52,6 +53,11 @@ public class CashCommand implements CommandExecutor {
                 }
                 else if(strings[0].equalsIgnoreCase("show")) {
                     player.sendMessage(CashRepository.cashDataHashMap.toString());
+                    return true;
+                }
+                else if(strings[0].equalsIgnoreCase("placeholder")) {
+                    String message = PlaceholderAPI.setPlaceholders(player, "§a당신의 캐시: %cashshop_cash%");
+                    player.sendMessage(message);
                     return true;
                 }
 

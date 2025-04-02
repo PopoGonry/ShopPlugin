@@ -2,6 +2,7 @@ package com.popogonry.shopPlugin;
 
 import com.popogonry.shopPlugin.cash.CashCommand;
 import com.popogonry.shopPlugin.cash.CashEvent;
+import com.popogonry.shopPlugin.cash.CashPlaceholder;
 import com.popogonry.shopPlugin.cash.CashRepository;
 import com.popogonry.shopPlugin.item.Item;
 import com.popogonry.shopPlugin.item.ItemCommand;
@@ -11,6 +12,7 @@ import com.popogonry.shopPlugin.shop.Shop;
 import com.popogonry.shopPlugin.shop.ShopCommand;
 import com.popogonry.shopPlugin.shop.ShopGUIEvent;
 import com.popogonry.shopPlugin.shop.ShopRepository;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -40,7 +42,6 @@ public final class ShopPlugin extends JavaPlugin {
         getServer().getPluginCommand("cash").setExecutor(new CashCommand());
         getServer().getPluginCommand("cashitem").setExecutor(new ItemCommand());
         getServer().getPluginCommand("cashshop").setExecutor(new ShopCommand());
-
 
 //         player cash data load
         CashRepository cashRepository = new CashRepository();
@@ -78,8 +79,15 @@ public final class ShopPlugin extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Shop Data Load Complete!");
 
 
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new CashPlaceholder().register();
+            getLogger().info("Cash Placeholder Registered!");
+        } else {
+            getLogger().warning("PlaceholderAPI가 설치되지 않았습니다. 커스텀 플레이스홀더를 사용할 수 없습니다!");
+        }
 
         Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Shop Plugin Enabled");
+
 
 
     }

@@ -1,5 +1,6 @@
 package com.popogonry.shopPlugin.shop;
 
+import com.popogonry.shopPlugin.ChatColorUtil;
 import com.popogonry.shopPlugin.Reference;
 import com.popogonry.shopPlugin.ShopPlugin;
 import com.popogonry.shopPlugin.ShopPluginRepository;
@@ -20,10 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ShopGUIEvent implements Listener {
 
@@ -54,6 +52,7 @@ public class ShopGUIEvent implements Listener {
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 if(event.getClick().isLeftClick()) {
                     shopGUI.openShopSettingGUI(player, itemMeta.getDisplayName());
+
                 }
                 else if(event.getClick().isRightClick()) {
                     shopGUI.openShopGUI(player, itemMeta.getDisplayName(), 1);
@@ -385,13 +384,15 @@ public class ShopGUIEvent implements Listener {
                     });
                 }
                 else {
-                    if(shopService.createShop(new Shop(event.getMessage(), new HashMap<>(), 1))) {
-                        player.sendMessage(Reference.prefix_normal + event.getMessage() + " 상점이 생성 되었습니다.");
+                    String shopName = event.getMessage();
+
+                    if(shopService.createShop(new Shop(shopName, new HashMap<>(), 1))) {
+                        player.sendMessage(Reference.prefix_normal + shopName + " 상점이 생성 되었습니다.");
 
                         ShopPluginRepository.playerInputModeHashMap.remove(player.getUniqueId());
                         ShopPluginRepository.playerCurrentInventoryHashMap.remove(player.getUniqueId());
                         Bukkit.getScheduler().runTask(ShopPlugin.getServerInstance(), () -> {
-                            shopGUI.openShopSettingGUI(player, event.getMessage());
+                            shopGUI.openShopSettingGUI(player, shopName);
                         });
                     }
                     else {
@@ -441,15 +442,16 @@ public class ShopGUIEvent implements Listener {
 
                     switch(mode) {
                         case ShopName:
-                            if(shopService.createShop(new Shop(message, shop.getItemHashMap(), shop.getSize()))) {
-                                player.sendMessage(Reference.prefix_normal + shop.getName() + " 상점의 이름이 " + message + "로 변경 되었습니다.");
+                            String shopName = message;
+                            if(shopService.createShop(new Shop(shopName, shop.getItemHashMap(), shop.getSize()))) {
+                                player.sendMessage(Reference.prefix_normal + shop.getName() + " 상점의 이름이 " + shopName + "로 변경 되었습니다.");
 
                                 shopService.removeShop(shop.getName());
 
                                 ShopPluginRepository.playerInputModeHashMap.remove(player.getUniqueId());
                                 ShopPluginRepository.playerCurrentInventoryHashMap.remove(player.getUniqueId());
                                 Bukkit.getScheduler().runTask(ShopPlugin.getServerInstance(), () -> {
-                                    shopGUI.openShopSettingGUI(player, message);
+                                    shopGUI.openShopSettingGUI(player, shopName);
                                 });
                             }
                             else {

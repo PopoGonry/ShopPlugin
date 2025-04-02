@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -320,8 +321,10 @@ public class ItemGUIEvent implements Listener {
 
                 switch(mode) {
                     case ItemName:
-                        player.sendMessage(Reference.prefix_normal + item.getName() + " 아이템의 이름이 " + message + "로 변경 되었습니다.");
-                        item.setName(message);
+                        String itemName = ChatColorUtil.translateRGBColors(message);
+                        player.sendMessage(Reference.prefix_normal + item.getName() + " 아이템의 이름이 " + itemName + "로 변경 되었습니다.");
+
+                        item.setName(itemName);
 
                         break;
 
@@ -390,7 +393,13 @@ public class ItemGUIEvent implements Listener {
                     ItemStack itemStack = event.getItemDrop().getItemStack();
                     BookMeta bookMeta = (BookMeta) itemStack.getItemMeta();
 
-                    item.setLore(bookMeta.getPages());
+
+                    List<String> lore = new ArrayList<>();
+                    for (String string : bookMeta.getPages()) {
+                        lore.add(ChatColorUtil.translateRGBColors(string));
+                    }
+
+                    item.setLore(lore);
 
                     player.sendMessage(Reference.prefix_normal + item.getName() + " 아이템의 설명이 아래와 같이 변경 되었습니다.");
                     for (String s : item.getLore()) {
