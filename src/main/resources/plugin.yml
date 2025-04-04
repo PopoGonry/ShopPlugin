@@ -5,6 +5,7 @@ api-version: '1.21'
 commands:
   cash:
     description: cash
+    aliases: [캐시]
   cashitem:
   cashshop:
 

@@ -80,7 +80,7 @@ public final class ShopPlugin extends JavaPlugin {
 
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new CashPlaceholder().register();
+            new CashPlaceholder(this).register();
             getLogger().info("Cash Placeholder Registered!");
         } else {
             getLogger().warning("PlaceholderAPI가 설치되지 않았습니다. 커스텀 플레이스홀더를 사용할 수 없습니다!");
