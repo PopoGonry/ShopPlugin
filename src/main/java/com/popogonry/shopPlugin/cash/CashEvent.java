@@ -16,8 +16,13 @@ public class CashEvent implements Listener {
     @EventHandler
     public static void usePaperEvent(PlayerInteractEvent event) {
         if (event.getAction().isRightClick() && event.getItem() != null) {
+
             ItemStack itemStack = event.getItem();
+            if (itemStack == null || itemStack.getType().isAir()) return;
+
             ItemMeta itemMeta = itemStack.getItemMeta();
+            if (itemMeta == null || !itemMeta.hasLore()) return;
+
 
             if (itemMeta.hasLore()) {
                 List<String> lore = itemMeta.getLore();
