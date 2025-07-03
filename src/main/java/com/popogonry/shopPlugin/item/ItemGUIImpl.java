@@ -165,26 +165,35 @@ public class ItemGUIImpl implements ItemGUI {
 
         // 할인 X
         if(item.getPrice() == item.getDiscountPrice()) {
-            lore.add(ChatColor.GOLD + "- 가격: " + item.getPrice());
+            lore.add("§6§l| §f§l가격 : §a§l" + formatWithComma(item.getPrice()) + "§f§l원");
+
         }
         // 할인 O
         else {
-            lore.add(ChatColor.GOLD + "- 가격: " + ChatColor.RED + ChatColor.STRIKETHROUGH + item.getPrice() + "원" +
-                    ChatColor.RESET + ChatColor.GOLD + " => " + ChatColor.GREEN + item.getDiscountPrice() + "원" +
-                    ChatColor.GRAY + " (" + String.format("%.1f",
+            lore.add("§6§l| §f§l가격 : §c§l" + formatWithComma(item.getPrice()) + "§f§l원 §f§l=> §a§l" + formatWithComma(item.getDiscountPrice()) + "§f§l원 §7§l(-" + String.format("%.1f",
                     (item.getPrice() > 0 ? (double)(item.getPrice() - item.getDiscountPrice()) / item.getPrice() * 100 : 0)) + "%)");
+
+
+//
+//            lore.add(ChatColor.GOLD + "- 가격: " + ChatColor.RED + ChatColor.STRIKETHROUGH + item.getPrice() + "원" +
+//                    ChatColor.RESET + ChatColor.GOLD + " => " + ChatColor.GREEN + item.getDiscountPrice() + "원" +
+//                    ChatColor.GRAY + " (" + String.format("%.1f",
+//                    (item.getPrice() > 0 ? (double)(item.getPrice() - item.getDiscountPrice()) / item.getPrice() * 100 : 0)) + "%)");
 
         }
 
         // 남은 수량
         if(item.getIsLimitAmount()) {
-            lore.add(ChatColor.GOLD + "- 남은 수량: " + item.getRemainAmount() + "/" + item.getLimitAmount() + "개");
+            lore.add("§6§l| §f§l남은 수량 : §6§l" + item.getRemainAmount() + "/" + item.getLimitAmount() + "§f§l개");
+//            lore.add(ChatColor.GOLD + "- 남은 수량: " + item.getRemainAmount() + "/" + item.getLimitAmount() + "개");
         }
 
         // 판매 기간
         if(item.getIsLimitDate()) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 원하는 형식 지정
-            lore.add(ChatColor.GOLD + "- 판매 기간: " + dateFormat.format(new Date(item.getLimitDate())) + "까지");
+            lore.add("§6§l| §f§l판매 기간 : §6§l" + dateFormat.format(new Date(item.getLimitDate())) + "§f§l까지");
+
+//            lore.add(ChatColor.GOLD + "- 판매 기간: " + dateFormat.format(new Date(item.getLimitDate())) + "까지");
         }
 
 
@@ -194,6 +203,11 @@ public class ItemGUIImpl implements ItemGUI {
             lore.addAll(item.getLore());
         }
 
+        lore.add(" ");
+        lore.add("§6§l▶ §b§l좌클릭§f§l으로 구매 가능합니다.");
+
+
+
 
         returnItemMeta.setLore(lore);
 
@@ -201,4 +215,10 @@ public class ItemGUIImpl implements ItemGUI {
 
         return returnItemStack;
     }
+
+    public String formatWithComma(int number) {
+        return String.format("%,d", number);
+    }
+
 }
+

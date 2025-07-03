@@ -2,6 +2,7 @@ package com.popogonry.shopPlugin.shop;
 
 import com.popogonry.shopPlugin.GUI;
 import com.popogonry.shopPlugin.Reference;
+import com.popogonry.shopPlugin.ShopPluginRepository;
 import com.popogonry.shopPlugin.item.Item;
 import com.popogonry.shopPlugin.item.ItemGUI;
 import com.popogonry.shopPlugin.item.ItemGUIImpl;
@@ -172,9 +173,10 @@ public class ShopGUIImpl implements ShopGUI {
     }
 
 
+    // 찐 상점 GUI
     @Override
     public boolean openShopGUI(Player player, String shopName, int page) {
-        Inventory inventory = Bukkit.createInventory(player, 54, "cashshopmenu");
+        Inventory inventory = Bukkit.createInventory(player, 54, ShopPluginRepository.pluginConfig.getCashShopGUIDisplayName());
 
         Shop shop = ShopRepository.shopDataHashMap.get(shopName);
 

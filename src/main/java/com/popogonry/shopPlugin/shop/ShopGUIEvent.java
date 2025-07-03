@@ -60,7 +60,7 @@ public class ShopGUIEvent implements Listener {
                 else if(event.getClick().isRightClick() && event.getClick().isShiftClick()) {
                     shopService.removeShop(itemMeta.getDisplayName());
                     player.sendMessage(Reference.prefix_normal + itemMeta.getDisplayName() + " 상점이 제거 되었습니다.");
-                     shopGUI.openShopListGUI(player, page);
+                    shopGUI.openShopListGUI(player, page);
                 }
 
 
@@ -270,7 +270,7 @@ public class ShopGUIEvent implements Listener {
 
     @EventHandler
     public static void onClickShopGUI(InventoryClickEvent event) {
-        if(event.getView().getTitle().equalsIgnoreCase("cashshopmenu")
+        if(event.getView().getTitle().equalsIgnoreCase(ShopPluginRepository.pluginConfig.getCashShopGUIDisplayName())
                 && event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
 
             event.setCancelled(true);

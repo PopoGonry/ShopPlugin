@@ -25,11 +25,12 @@ public final class ShopPlugin extends JavaPlugin {
 
     private static ShopPlugin serverInstance;
 
-
     @Override
     public void onEnable() {
         // Plugin startup logic
         serverInstance = this;
+        saveDefaultConfig();
+
         ConfigurationSerialization.registerClass(Item.class);
         ConfigurationSerialization.registerClass(Shop.class);
 
@@ -42,6 +43,9 @@ public final class ShopPlugin extends JavaPlugin {
         getServer().getPluginCommand("cash").setExecutor(new CashCommand());
         getServer().getPluginCommand("cashitem").setExecutor(new ItemCommand());
         getServer().getPluginCommand("cashshop").setExecutor(new ShopCommand());
+
+        ShopPluginRepository pluginRepository = new ShopPluginRepository();
+        pluginRepository.loadPluginDataConfig();
 
 //         player cash data load
         CashRepository cashRepository = new CashRepository();
