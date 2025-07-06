@@ -1,6 +1,8 @@
 package com.popogonry.shopPlugin.shop;
 
 import com.popogonry.shopPlugin.Reference;
+import com.popogonry.shopPlugin.ShopPluginRepository;
+import com.popogonry.shopPlugin.cash.CashRepository;
 import com.popogonry.shopPlugin.item.Item;
 import com.popogonry.shopPlugin.item.ItemRepository;
 import com.popogonry.shopPlugin.item.ItemService;
@@ -36,6 +38,18 @@ public class ShopCommand implements CommandExecutor {
                     else {
                         commandSender.sendMessage(Reference.prefix_error + "플레이어 전용 명령어 입니다.");
                     }
+                    return true;
+                }
+                else if(strings[0].equalsIgnoreCase("load")) {
+                    ShopPluginRepository shopPluginRepository = new ShopPluginRepository();
+                    shopPluginRepository.loadAllPluginData();
+                    commandSender.sendMessage(Reference.prefix_normal + "캐시 상점 데이터 로딩 완료");
+                    return true;
+                }
+                else if(strings[0].equalsIgnoreCase("save")) {
+                    ShopPluginRepository shopPluginRepository = new ShopPluginRepository();
+                    shopPluginRepository.saveAllPluginData();
+                    commandSender.sendMessage(Reference.prefix_normal + "캐시 상점 데이터 저장 완료");
                     return true;
                 }
             }

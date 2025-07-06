@@ -36,33 +36,6 @@ public class CashCommand implements CommandExecutor {
                     }
                     return true;
                 }
-//                else if(strings[0].equalsIgnoreCase("store")) {
-//                    CashRepository cashRepository = new CashRepository();
-//                    cashRepository.storeCashData(player.getUniqueId());
-//
-//                    player.sendMessage(CashRepository.cashDataHashMap.toString());
-//
-//                    return true;
-//                }
-//                else if(strings[0].equalsIgnoreCase("load")) {
-//                    CashRepository cashRepository = new CashRepository();
-//                    cashRepository.loadCashData(player.getUniqueId());
-//
-//                    player.sendMessage(CashRepository.cashDataHashMap.toString());
-//                    return true;
-//                }
-                else if(strings[0].equalsIgnoreCase("show")) {
-                    commandSender.sendMessage(CashRepository.cashDataHashMap.toString());
-                    return true;
-                }
-//                else if(strings[0].equalsIgnoreCase("placeholder") && commandSender instanceof Player) {
-//                    Player player = (Player) commandSender;
-//                    String message = PlaceholderAPI.setPlaceholders(player, "§a당신의 캐시: %cashshop_cash%");
-//                    commandSender.sendMessage(message);
-//                    return true;
-//                }
-
-
             }
             if((strings[0].equalsIgnoreCase("check") || strings[0].equalsIgnoreCase("확인")) && commandSender instanceof Player) {
                 Player player = (Player) commandSender;
@@ -194,9 +167,28 @@ public class CashCommand implements CommandExecutor {
                 }
             }
         }
-        commandSender.sendMessage(Reference.prefix_normal + "Cash Command [캐시 명령어]");
-        commandSender.sendMessage(Reference.prefix_normal + "/cash, /cash check, /캐시, /캐시 확인" + ChatColor.GRAY + " : 캐시를 확인합니다.");
-//        player.sendMessage(Reference.prefix_normal + "/cash paper [cash] [amount]" + ChatColor.GRAY + " : [cash] 캐시 수표를 [amount] 만큼 발행합니다.");
+
+        sendCashCommandHelp(commandSender);
         return false;
+    }
+
+    public static void sendCashCommandHelp(CommandSender sender) {
+        sender.sendMessage("§7========== §a[캐시 명령어 도움말] §7==========");
+        sender.sendMessage("§6▶ 일반 명령어");
+        sender.sendMessage(" §f/cash §7또는 §f/캐시 §7: 자신의 캐시를 확인합니다.");
+        sender.sendMessage(" §f/cash check §7또는 §f/캐시 확인 §7: 자신의 캐시를 확인합니다.");
+
+        if (sender.isOp()) {
+            sender.sendMessage("§6▶ 관리자 명령어");
+            sender.sendMessage(" §f/cash checkAll §7: 접속 중인 모든 플레이어의 캐시를 확인합니다.");
+            sender.sendMessage(" §f/cash check <플레이어명> §7: 대상 플레이어의 캐시를 확인합니다.");
+            sender.sendMessage(" §f/cash set <플레이어명> <금액> §7: 캐시를 설정합니다.");
+            sender.sendMessage(" §f/cash add <플레이어명> <금액> §7: 캐시를 추가합니다.");
+            sender.sendMessage(" §f/cash subtract <플레이어명> <금액> §7: 캐시를 차감합니다.");
+            sender.sendMessage(" §f/cash paper <금액> §7: 자신의 인벤토리에 캐시 수표를 발행합니다.");
+            sender.sendMessage(" §f/cash paper <금액> <수량> §7: 여러 장의 캐시 수표를 발행합니다.");
+        }
+
+        sender.sendMessage("§7=====================================");
     }
 }

@@ -45,43 +45,7 @@ public final class ShopPlugin extends JavaPlugin {
         getServer().getPluginCommand("cashshop").setExecutor(new ShopCommand());
 
         ShopPluginRepository pluginRepository = new ShopPluginRepository();
-        pluginRepository.loadPluginDataConfig();
-
-//         player cash data load
-        CashRepository cashRepository = new CashRepository();
-
-        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Player Cash Data Load Start...");
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            cashRepository.loadCashData(onlinePlayer.getUniqueId());
-        }
-        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Player Cash Data Load Complete!");
-
-//        item data load
-        ItemRepository itemRepository = new ItemRepository();
-
-        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Item Data Load Start...");
-
-        itemRepository.loadItemIdSetData();
-
-        for (int itemId : ItemRepository.itemIdSet) {
-            itemRepository.loadItemData(itemId);
-        }
-
-        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Item Data Load Complete!");
-
-//        shop data load
-        ShopRepository shopRepository = new ShopRepository();
-
-        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Shop Data Load Start...");
-
-        shopRepository.loadShopNameSetData();
-
-        for (String shopName : ShopRepository.shopNameSet) {
-            shopRepository.loadShopData(shopName);
-        }
-
-        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Shop Data Load Complete!");
-
+        pluginRepository.loadAllPluginData();
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new CashPlaceholder(this).register();
@@ -100,32 +64,8 @@ public final class ShopPlugin extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
 
-//        player cash data store
-        CashRepository cashRepository = new CashRepository();
-        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Player Cash Data Store Start...");
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            cashRepository.storeCashData(onlinePlayer.getUniqueId());
-        }
-        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Player Cash Data Store Complete!");
-
-//        item data store
-        ItemRepository itemRepository = new ItemRepository();
-        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Item Data Store Start...");
-        for (int itemId : ItemRepository.itemIdSet) {
-            itemRepository.storeItemData(itemId);
-        }
-        itemRepository.storeItemIdSetData();
-        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Item Data Store Complete!");
-
-//        shop data store
-        ShopRepository shopRepository = new ShopRepository();
-        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Shop Data Store Start...");
-        for (String shopName : ShopRepository.shopNameSet) {
-            shopRepository.storeShopData(shopName);
-        }
-        shopRepository.storeShopNameSetData();
-
-        Bukkit.getConsoleSender().sendMessage(Reference.prefix_normal + "Shop Data Store Complete!");
+        ShopPluginRepository pluginRepository = new ShopPluginRepository();
+        pluginRepository.saveAllPluginData();
 
 
         serverInstance = null;
